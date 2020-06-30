@@ -18,45 +18,19 @@ import java.util.*;
 public class Assets {
 
     static ArrayList<Texture> texs;
+    static ArrayList<String> texNames;
     static ArrayList<Mesh> meshs;
+    static ArrayList<String> meshNames;
     static int[] joglTexLocs;
     // texture asset IDs
-    static int SMILE = 0, PICK = 1, SELECT = 2, WALK = 3, PLUS = 4, GRASS = 5, DIRT = 6, MAN_TEX = 7;
-    static int CUBE_GRASS = 8;
+    
 
-    Assets(GL4 g) {
+    Assets() {
         texs = new ArrayList<Texture>();
         meshs = new ArrayList<Mesh>();
-        texs.add(loadTexture("smile.png"));
-        texs.add(loadTexture("pick.png"));
-        texs.add(loadTexture("select.png"));
-        texs.add(loadTexture("walk.png"));
-        texs.add(loadTexture("plus.png"));
-        texs.add(loadTexture("grass.png"));
-        texs.add(loadTexture("dirt.png"));
-        texs.add(loadTexture("man_tex.png"));
-        texs.add(loadCubeMap("cube_grass"));
+        texNames = new ArrayList<String>();
+        meshNames = new ArrayList<String>();
 
-        // System.out.println("texs length " + texs.size());
-        joglTexLocs = new int[texs.size()];
-
-        for (int i = 0; i < joglTexLocs.length; i++) {
-            joglTexLocs[i] = texs.get(i).getTextureObject(g);
-            System.out.println(joglTexLocs[i]);
-
-        }
-
-        meshs.add(new Mesh("tree.dae"));
-        meshs.add(new Mesh("rock.dae"));
-        meshs.add(new Mesh("man.dae"));
-
-        // float[] f = getData(XmlParser.loadXmlFile("tree.dae"));
-        // meshs.add(new Mesh(f));
-        // f = getData(XmlParser.loadXmlFile("rock.dae"));
-        // meshs.add(new Mesh(f));
-        // f = getData(XmlParser.loadXmlFile("man.dae"));
-        // meshs.add(new Mesh(f));
-        
 
     }
 
@@ -76,10 +50,10 @@ public class Assets {
         return tex;
     }
 
-    // loads the textures named top, bot left right front back in bin\name
+    // loads the textures named top, bot left right front back from bin\name
     static Texture loadCubeMap(String name) {
 
-        GL4 gl = (GL4) GLContext.getCurrentGL();
+        GL4 gl = (GL4) GLContext.getCurrentGL(); // this gl context not appropriate?
         GLProfile glp = gl.getGLProfile();
         Texture cubeMap = TextureIO.newTexture(GL4.GL_TEXTURE_CUBE_MAP);
 
@@ -113,6 +87,43 @@ public class Assets {
         // gl.glTexParameteri(GL4.GL_TEXTURE_CUBE_MAP, GL4.GL_TEXTURE_WRAP_R, GL4.GL_CLAMP_TO_EDGE);
 
         return cubeMap;
+    }
+
+    void addTex(String pathName){
+        Texture t = loadTexture(pathName);
+        if (t == null){
+            System.out.println("Attempted to load " + pathName + ": bad path name");
+            return;
+        }
+        texs.add(t);
+        texNames.add(pathName);
+        
+    }
+
+    void addMesh(String pathName){
+        Mesh m = new Mesh(pathName);
+        // alter to handle bad paths?
+        meshs.add(m);
+        meshNames.add(pathName);
+
+    }
+
+    // creates texture locations/objects based on the tex lists available for rendering
+    void updateJOGLTexLocs(GL4 g){
+        joglTexLocs = new int[texs.size()];
+
+        for (int i = 0; i < joglTexLocs.length; i++) {
+            joglTexLocs[i] = texs.get(i).getTextureObject(g);
+
+        }
+    }
+
+    void genMipMaps(GL4 g){
+        for (int i : Assets.joglTexLocs) {
+            g.glBindTexture(GL4.GL_TEXTURE_2D, i);
+            g.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR_MIPMAP_LINEAR);
+            g.glGenerateMipmap(GL4.GL_TEXTURE_2D);
+        }
     }
 
 }

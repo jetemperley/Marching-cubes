@@ -16,4 +16,6 @@ public class MarchingCubes{
         window.setCanvas(canvas);
         timer = new Timer(25, window);
     }
+
+    
 }

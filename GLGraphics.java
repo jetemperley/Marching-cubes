@@ -106,13 +106,9 @@ public class GLGraphics {
         // g.glBufferData(GL4.GL_ARRAY_BUFFER, buff.limit() * 4, buff,
         // GL4.GL_STATIC_DRAW);
 
-        assets = new Assets(g);
+        assets = new Assets();
 
-        for (int i : Assets.joglTexLocs) {
-            g.glBindTexture(GL4.GL_TEXTURE_2D, i);
-            g.glTexParameteri(GL4.GL_TEXTURE_2D, GL4.GL_TEXTURE_MIN_FILTER, GL4.GL_LINEAR_MIPMAP_LINEAR);
-            g.glGenerateMipmap(GL4.GL_TEXTURE_2D);
-        }
+        
 
         vm = new VBOManager(vbo[0]);
 
