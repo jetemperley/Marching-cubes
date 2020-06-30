@@ -1,5 +1,8 @@
-cd C:\Users\JET\Desktop\code\java\JOGL_APPS\MarchingCubes
 
-javac -d bin -classpath res\* *.java
+set temp=%~dp0
+set temp = %temp:~0,-1%
+cd %temp%
+
+javac -d bin -classpath bin\* *.java
 
 @pause

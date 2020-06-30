@@ -1,6 +1,8 @@
 
-cd C:\Users\JET\Desktop\code\java\JOGL_APPS\MarchingCubes\bin
+set temp=%~dp0
+set temp = %temp:~0,-1%
+cd %temp%bin
 
-java -classpath .;jogl-all.jar;jogl-all-natives-windows-amd64.jar;gluegen-rt.jar MarchingCubes
+java MarchingCubes
 
 @pause
