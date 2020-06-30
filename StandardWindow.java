@@ -1,9 +1,12 @@
 import javax.swing.JFrame;
 import javax.swing.OverlayLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.*;
 
-public class StandardWindow{
+public class StandardWindow implements ActionListener{
 
     JFrame frame;
     StandardGLCanvas canvas;
@@ -33,6 +36,11 @@ public class StandardWindow{
     public void setCanvas(StandardGLCanvas canvas){
         this.canvas = canvas;
         frame.getContentPane().add(canvas);
+    }
+
+
+    public void actionPerformed(ActionEvent e){
+        canvas.display();
     }
 
 
