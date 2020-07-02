@@ -11,11 +11,13 @@ public class MarchingCubes{
     }
 
     MarchingCubes(){
-        window = new StandardWindow();
+        window = new StandardWindow("Marching Cubes", 500, 500);
         StandardGLCanvas canvas = new StandardGLCanvas(null);
+        CubesAlgorithm cubes = new CubesAlgorithm();
+        canvas.setDrawable(cubes);
         window.setCanvas(canvas);
         timer = new Timer(25, window);
     }
 
-    
+
 }
