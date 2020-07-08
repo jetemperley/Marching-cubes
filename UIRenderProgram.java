@@ -16,14 +16,17 @@ import com.jogamp.opengl.util.texture.*;
 
 public class UIRenderProgram extends GLProgram{
 
+    int texLoc;
     UIRenderProgram(GL4 g, int targetTexture){
         setTexTarget(targetTexture);
         super.make(g, "ui_vert_shader.glsl", "ui_frag_shader.glsl");
 
         // pointer for texture coords
         // g.glBindBuffer(GL4.GL_ARRAY_BUFFER, vbo[1]);
-        g.glActiveTexture(GL4.GL_TEXTURE0);
-        g.glBindTexture(GL4.GL_TEXTURE_2D, Assets.joglTexLocs[0]);
+        
+        // g.glActiveTexture(GL4.GL_TEXTURE0);
+
+        // g.glBindTexture(GL4.GL_TEXTURE_2D, Assets.joglTexLocs[0]);
 
         // g.glBindFramebuffer(GL4.GL_FRAMEBUFFER, customBuffers[1]);
         g.glFramebufferTexture(GL4.GL_FRAMEBUFFER, GL4.GL_DEPTH_ATTACHMENT, textureID, 0);
@@ -60,6 +63,42 @@ public class UIRenderProgram extends GLProgram{
         g.glActiveTexture(GL4.GL_TEXTURE0);
         g.glBindTexture(GL4.GL_TEXTURE_2D, Assets.joglTexLocs[0]);
 
+    }
+
+    static String[] getDefaultVert(){
+        return new String[] {
+            "#version 430",
+            "layout (location = 0) in vec3 position;",
+            "layout (location = 2) in vec2 texCoord;",
+            "uniform mat4 pv;",
+            "",
+            "out vec2 tc;",
+            "void main(void) {",
+            "tc = texCoord;",
+            "gl_Position = pv*vec4(position, 1.0);",
+            "}",
+        };
+            
+    }
+
+    static String[] getDefaultFrag(){
+        return new String[] {
+            "#version 430",
+            "",
+            "layout (binding = 0) uniform sampler2D tex;",
+            "uniform vec4 alt_color;",
+            "out vec4 color;",
+            "in vec2 tc;",
+            "",
+            "void main(void){",
+            "",
+            "",
+            "vec4 tcolor = texture(tex, tc);",
+            "color = tcolor + alt_color;",
+            "",
+            "",
+            "}",
+            };
     }
 
 }

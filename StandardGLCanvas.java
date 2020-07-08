@@ -3,25 +3,29 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.glu.*;
 import com.jogamp.opengl.awt.*;
 
-class StandardGLCanvas extends GLCanvas implements GLEventListener{
+class StandardGLCanvas extends GLCanvas implements GLEventListener {
 
     Drawable drawable;
     GLGraphics graphics;
 
-    StandardGLCanvas(int x, int y){
+    StandardGLCanvas(int x, int y) {
         this(null, x, y);
     }
 
     StandardGLCanvas(Drawable drawable, int x, int y) {
         this.drawable = drawable;
-        this.addGLEventListener(this);
-        this.setSize(x, y);
+        addGLEventListener(this);
+        setSize(x, y);
     }
 
     @Override
     public void init(GLAutoDrawable arg0) {
+        System.out.println();
+        System.out.println("Canvas initialising...");
         GL4 g = (GL4) GLContext.getCurrentGL();
         GLGraphics graphics = new GLGraphics(g);
+        System.out.println("canvas init ... complete");
+
     }
 
     // call this.display() from a loop or timer to trigger display(drawable)
@@ -30,14 +34,18 @@ class StandardGLCanvas extends GLCanvas implements GLEventListener{
     @Override
     public void display(GLAutoDrawable drawable) {
         System.out.println("displayed");
-        graphics.clear();
-        graphics.drawCube();
-        // draw things
-        if (this.drawable != null)
-            this.drawable.draw(graphics);
+        if (graphics != null) {
+            graphics.clear();
+            graphics.drawCube();
+
+            if (this.drawable != null)
+                this.drawable.draw(graphics);
+
+        }
+
     }
 
-    void setDrawable(Drawable drawable){
+    void setDrawable(Drawable drawable) {
         this.drawable = drawable;
     }
 
@@ -47,7 +55,6 @@ class StandardGLCanvas extends GLCanvas implements GLEventListener{
 
     public void dispose(GLAutoDrawable arg0) {
         // method body
-     }
-
+    }
 
 }

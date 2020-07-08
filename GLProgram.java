@@ -135,6 +135,14 @@ public abstract class GLProgram{
             // System.out.println(program[i]);
         }
         sc.close();
+        System.out.println("Printing: " + filename);
+
+        System.out.println("{");
+        for (String s : program){
+            s = s.trim();
+            System.out.println( "\"" + s + "\",");
+        }
+        System.out.println("}");
         return program;
     }
 

@@ -18,8 +18,10 @@ public class MarchingCubes{
         CubesAlgorithm cubes = new CubesAlgorithm();
         canvas.setDrawable(cubes);
         window.setCanvas(canvas);
+
         timer = new Timer(25, window);
-        timer.start();
+        window.canvas.display();
+        // timer.start();
     }
 
 
