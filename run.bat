@@ -5,4 +5,3 @@ cd %temp%bin
 
 java MarchingCubes
 
-@pause

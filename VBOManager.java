@@ -44,9 +44,9 @@ public class VBOManager {
         this.add("cubeFront", GeoVerts.getFrontVerts(), GL.GL_TRIANGLE_STRIP);
         this.add("cubeBack", GeoVerts.getBackVerts(), GL.GL_TRIANGLE_STRIP);
 
-        this.add("tree", Assets.meshs.get(0).verts, GL.GL_TRIANGLES);
-        this.add("rock", Assets.meshs.get(1).verts, GL.GL_TRIANGLES);
-        this.add("man", Assets.meshs.get(2).verts, GL.GL_TRIANGLES);
+        // this.add("tree", Assets.meshs.get(0).verts, GL.GL_TRIANGLES);
+        // this.add("rock", Assets.meshs.get(1).verts, GL.GL_TRIANGLES);
+        // this.add("man", Assets.meshs.get(2).verts, GL.GL_TRIANGLES);
     }
 
     VBO getVBO(String name) {

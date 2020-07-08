@@ -8,11 +8,14 @@ class StandardGLCanvas extends GLCanvas implements GLEventListener{
     Drawable drawable;
     GLGraphics graphics;
 
-    StandardGLCanvas(){
+    StandardGLCanvas(int x, int y){
+        this(null, x, y);
     }
-    
-    StandardGLCanvas(Drawable drawable) {
+
+    StandardGLCanvas(Drawable drawable, int x, int y) {
         this.drawable = drawable;
+        this.addGLEventListener(this);
+        this.setSize(x, y);
     }
 
     @Override
@@ -26,7 +29,9 @@ class StandardGLCanvas extends GLCanvas implements GLEventListener{
 
     @Override
     public void display(GLAutoDrawable drawable) {
-
+        System.out.println("displayed");
+        graphics.clear();
+        graphics.drawCube();
         // draw things
         if (this.drawable != null)
             this.drawable.draw(graphics);

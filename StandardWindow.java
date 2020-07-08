@@ -31,15 +31,20 @@ public class StandardWindow implements ActionListener{
         frame.setVisible(true);
         frame.setSize(x, y);
         frame.getContentPane().setLayout(new OverlayLayout(frame.getContentPane()));
+
+        
     }
 
     public void setCanvas(StandardGLCanvas canvas){
         this.canvas = canvas;
+        canvas.setAutoSwapBufferMode(false);
         frame.getContentPane().add(canvas);
+        
     }
 
 
     public void actionPerformed(ActionEvent e){
+        System.out.println("action performed");
         canvas.display();
     }
 

@@ -9,6 +9,8 @@ import java.util.*;
 import java.io.*;
 import java.nio.*;
 
+// TODO: insert default shaders into extended classes, allow enableing custom shaders
+
 public abstract class GLProgram{
     
     // program ID and the texture ID it renders to
