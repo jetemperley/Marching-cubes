@@ -21,7 +21,7 @@ public class MarchingCubes{
 
         timer = new Timer(25, window);
         window.canvas.display();
-        // timer.start();
+        timer.start();
     }
 
 

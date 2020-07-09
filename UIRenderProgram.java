@@ -19,7 +19,7 @@ public class UIRenderProgram extends GLProgram{
     int texLoc;
     UIRenderProgram(GL4 g, int targetTexture){
         setTexTarget(targetTexture);
-        super.make(g, "ui_vert_shader.glsl", "ui_frag_shader.glsl");
+        super.make(g, getDefaultVert(), getDefaultFrag());
 
         // pointer for texture coords
         // g.glBindBuffer(GL4.GL_ARRAY_BUFFER, vbo[1]);
@@ -67,6 +67,7 @@ public class UIRenderProgram extends GLProgram{
 
     static String[] getDefaultVert(){
         return new String[] {
+            "// ui vert shader",
             "#version 430",
             "layout (location = 0) in vec3 position;",
             "layout (location = 2) in vec2 texCoord;",
@@ -83,6 +84,7 @@ public class UIRenderProgram extends GLProgram{
 
     static String[] getDefaultFrag(){
         return new String[] {
+            "// ui frag shader",
             "#version 430",
             "",
             "layout (binding = 0) uniform sampler2D tex;",

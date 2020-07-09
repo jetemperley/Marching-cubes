@@ -18,7 +18,7 @@ public class ModelRenderProgram extends GLProgram {
     ModelRenderProgram(GL4 g, int targetTexture) {
         // create the program
         setTexTarget(targetTexture);
-        super.make(g, "vert_shader.glsl", "frag_shader.glsl");
+        super.make(g, getDefaultVert(), getDefaultFrag());
 
         // set up the custom depth buffer
         // g.glBindFramebuffer(GL4.GL_FRAMEBUFFER, customBuffers[0]);
@@ -96,6 +96,7 @@ public class ModelRenderProgram extends GLProgram {
 
     static String[] getDefaultFrag(){
         return new String[] {
+            "// model frag shader",
             "#version 430",
             "out vec4 color;",
             "uniform vec4 altcolor;",
@@ -132,6 +133,7 @@ public class ModelRenderProgram extends GLProgram {
 
     static String[] getDefaultVert(){
         return new String[] {
+            "// model vert shader",
             "#version 430",
             "layout (location = 0) in vec3 position;",
             "layout (location = 1) in vec3 normal;",

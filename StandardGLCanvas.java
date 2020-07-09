@@ -28,12 +28,12 @@ class StandardGLCanvas extends GLCanvas implements GLEventListener {
 
     }
 
-    // call this.display() from a loop or timer to trigger display(drawable)
+    // call display() from a loop or timer to trigger display(drawable)
     // should occur every frame
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        System.out.println("displayed");
+        // System.out.println("displayed");
         if (graphics != null) {
             graphics.clear();
             graphics.drawCube();

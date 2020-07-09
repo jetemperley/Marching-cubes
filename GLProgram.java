@@ -60,29 +60,37 @@ public abstract class GLProgram{
         this.ID = createShaderPrograms(g, vertShader, fragShader);
     }
 
-    private int createShaderPrograms(GL4 gl, String vertSh, String fragSh) {
+    void make(GL4 g, String[] vert, String[] frag){
+        this.ID = createShaderPrograms(g, vert, frag);
+    }
+
+    private int createShaderPrograms(GL4 g, String vertSh, String fragSh) {
 
         String[] vertShaderSource = readShaderSource(vertSh);
         String[] fragShaderSource = readShaderSource(fragSh);
-
-        int vShader = makeVShader(gl, vertShaderSource);
-        int fShader = makeFShader(gl, fragShaderSource);
+        return createShaderPrograms(g, vertShaderSource, fragShaderSource);
+        
+    }
+ 
+    private int createShaderPrograms(GL4 gl, String[] vert, String[] frag){
+        int vShader = makeVShader(gl, vert);
+        int fShader = makeFShader(gl, frag);
 
         // check for errors
         int[] compiled = new int[1];
         gl.glGetShaderiv(vShader, GL4.GL_COMPILE_STATUS, compiled, 0);
         if (compiled[0] == 1) {
-            System.out.println(". . . " + vertSh + " compilation success.");
+            System.out.println(". . . " + vert[0] + " compilation success.");
         } else {
-            System.out.println(". . . " + vertSh + " compilation failed.");
+            System.out.println(". . . " + vert[0] + " compilation failed.");
             printShaderLog(gl, vShader);
         }
 
         gl.glGetShaderiv(fShader, GL4.GL_COMPILE_STATUS, compiled, 0);
         if (compiled[0] == 1) {
-            System.out.println(". . . " + fragSh + " compilation success.");
+            System.out.println(". . . " + frag[0] + " compilation success.");
         } else {
-            System.out.println(". . . " + fragSh + " compilation failed.");
+            System.out.println(". . . " + frag[0] + " compilation failed.");
             printShaderLog(gl, fShader);
         }
 
@@ -91,7 +99,6 @@ public abstract class GLProgram{
         gl.glDeleteShader(vShader);
         gl.glDeleteShader(fShader);
         return rendering_program;
-
     }
 
     private int makeVShader(GL4 gl, String[] source) {
@@ -135,7 +142,7 @@ public abstract class GLProgram{
             // System.out.println(program[i]);
         }
         sc.close();
-        System.out.println("Printing: " + filename);
+        System.out.println("Reading: " + filename);
 
         System.out.println("{");
         for (String s : program){
