@@ -44,7 +44,7 @@ public class StandardWindow implements ActionListener{
 
 
     public void actionPerformed(ActionEvent e){
-        System.out.println("action performed");
+        // System.out.println("action performed");
         canvas.display();
     }
 

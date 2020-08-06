@@ -13,9 +13,11 @@ class StandardGLCanvas extends GLCanvas implements GLEventListener {
     }
 
     StandardGLCanvas(Drawable drawable, int x, int y) {
+
         this.drawable = drawable;
         addGLEventListener(this);
         setSize(x, y);
+        setAutoSwapBufferMode(false);
     }
 
     @Override
@@ -23,7 +25,9 @@ class StandardGLCanvas extends GLCanvas implements GLEventListener {
         System.out.println();
         System.out.println("Canvas initialising...");
         GL4 g = (GL4) GLContext.getCurrentGL();
-        GLGraphics graphics = new GLGraphics(g);
+        
+        graphics = new GLGraphics(g);
+        System.out.println("graphics is null: " + (this.graphics==null));
         System.out.println("canvas init ... complete");
 
     }
@@ -33,13 +37,16 @@ class StandardGLCanvas extends GLCanvas implements GLEventListener {
 
     @Override
     public void display(GLAutoDrawable drawable) {
-        // System.out.println("displayed");
+        //System.out.println("displayed");
         if (graphics != null) {
+            
             graphics.clear();
-            graphics.drawCube();
+            graphics.readyModelProg();
+            graphics.drawCube(2.0f, 2.0f, 2.0f);
 
-            if (this.drawable != null)
+            if (this.drawable != null) {
                 this.drawable.draw(graphics);
+            }
 
         }
 

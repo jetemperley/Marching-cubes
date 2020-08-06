@@ -39,9 +39,8 @@ public class Camera {
 
     // orbit camera around z
     public void rotate(float f, float x, float y, float z){
+        
         view.rotate(f, x, y, z);
-        
-        
         updateCamera();
     }
 

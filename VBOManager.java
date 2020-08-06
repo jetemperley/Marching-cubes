@@ -24,7 +24,6 @@ public class VBOManager {
     final int VERT_SIZE = 14;
     static int CUBE_TOP = 0, CUBE_BOT = 1, CUBE_LEFT = 2;
     static int CUBE_RIGHT = 3, CUBE_FRONT = 4, CUBE_BACK = 5;
-    static int TREE = 6, ROCK = TREE+1, MAN = ROCK+1;
     static VBOManager manager;
 
     VBOManager(int vboID) {

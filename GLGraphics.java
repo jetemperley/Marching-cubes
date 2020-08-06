@@ -28,10 +28,11 @@ public class GLGraphics {
 
     // main rendering location and uniforms
     private UIRenderProgram UIprog;
-    private ModelRenderProgram blockProg;
+    private ModelRenderProgram modelProg;
     private AnimatedModelRenderProgram animProg;
     private GLProgram currentProgram;
     private ModelRenderProgram lastModelProgram;
+    private SimpleRenderProgram simpleProgram;
 
     // shadoow shader location and uniforms
     int shadow_shader, temp_sShader;
@@ -60,7 +61,7 @@ public class GLGraphics {
 
         temp = new Matrix4();
 
-        vao = new int[3];
+        vao = new int[4];
         vbo = new int[2];
 
         customBuffers = new int[3];
@@ -108,8 +109,6 @@ public class GLGraphics {
 
         assets = new Assets();
 
-        
-
         vm = new VBOManager(vbo[0]);
 
         FloatBuffer verts = vm.genBuffer();
@@ -118,13 +117,18 @@ public class GLGraphics {
 
         // vertex array for the blocks
         g.glBindVertexArray(vao[0]);
-        blockProg = new ModelRenderProgram(g, customTextures[0]);
+        modelProg = new ModelRenderProgram(g, customTextures[0]);
         // vertex array for the menues
         g.glBindVertexArray(vao[1]);
         UIprog = new UIRenderProgram(g, customTextures[1]);
+        
         // vao for animated models
         g.glBindVertexArray(vao[2]);
         animProg = new AnimatedModelRenderProgram(g, customTextures[2]);
+
+        // vao for animated models
+        g.glBindVertexArray(vao[3]);
+        simpleProgram= new SimpleRenderingProgram(g, customTextures[2]);
 
     }
 
@@ -133,13 +137,13 @@ public class GLGraphics {
         g.glClear(GL4.GL_DEPTH_BUFFER_BIT);
     }
 
-    void readyBlockProg() {
+    void readyModelProg() {
         // vao0 is for the 3d environment renderer
         g.glBindVertexArray(vao[0]);
-        currentProgram = blockProg;
-        lastModelProgram = blockProg;
-        blockProg.ready(g);
-        blockProg.resetUniforms(this);
+        currentProgram = modelProg;
+        lastModelProgram = modelProg;
+        modelProg.ready(g);
+        modelProg.resetUniforms(this);
 
     }
 
@@ -202,6 +206,54 @@ public class GLGraphics {
         vt = vm.getVBO(VBOManager.CUBE_TOP);
         this.g.glDrawArrays(vt.vertexPattern, vt.start / vm.VERT_SIZE, vt.length);
         currentProgram.setHighlightColor(this.g, 0, 0, 0, 0);
+    }
+
+    void drawCube(float x, float y, float z) {
+        g.glBindTexture(GL4.GL_TEXTURE_2D, 0);
+        setDrawLoc(x, y, z);
+
+        VBO v;
+        v = vm.getVBO(VBOManager.CUBE_TOP);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
+
+        v = vm.getVBO(VBOManager.CUBE_BOT);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
+
+        v = vm.getVBO(VBOManager.CUBE_LEFT);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
+
+        v = vm.getVBO(VBOManager.CUBE_RIGHT);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
+
+        v = vm.getVBO(VBOManager.CUBE_FRONT);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
+
+        v = vm.getVBO(VBOManager.CUBE_BACK);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
+    }
+
+    void drawCube(int texID) {
+
+        g.glBindTexture(GL4.GL_TEXTURE_2D, Assets.joglTexLocs[texID]);
+
+        VBO v;
+        v = vm.getVBO(VBOManager.CUBE_TOP);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
+
+        v = vm.getVBO(VBOManager.CUBE_BOT);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
+
+        v = vm.getVBO(VBOManager.CUBE_LEFT);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
+
+        v = vm.getVBO(VBOManager.CUBE_RIGHT);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
+
+        v = vm.getVBO(VBOManager.CUBE_FRONT);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
+
+        v = vm.getVBO(VBOManager.CUBE_BACK);
+        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
     }
 
     void drawCube(boolean[] faces) {
@@ -342,53 +394,8 @@ public class GLGraphics {
     // // drawSingleCube(g);
 
     // }
-
-    void drawCube() {
-        g.glBindTexture(GL4.GL_TEXTURE_2D, 0);
-
-        VBO v;
-        v = vm.getVBO(VBOManager.CUBE_TOP);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-
-        v = vm.getVBO(VBOManager.CUBE_BOT);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-
-        v = vm.getVBO(VBOManager.CUBE_LEFT);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-
-        v = vm.getVBO(VBOManager.CUBE_RIGHT);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-
-        v = vm.getVBO(VBOManager.CUBE_FRONT);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-
-        v = vm.getVBO(VBOManager.CUBE_BACK);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-    }
-
-    void drawCube(int texID) {
-
-        g.glBindTexture(GL4.GL_TEXTURE_2D, Assets.joglTexLocs[texID]);
-
-        VBO v;
-        v = vm.getVBO(VBOManager.CUBE_TOP);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-
-        v = vm.getVBO(VBOManager.CUBE_BOT);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-
-        v = vm.getVBO(VBOManager.CUBE_LEFT);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-
-        v = vm.getVBO(VBOManager.CUBE_RIGHT);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-
-        v = vm.getVBO(VBOManager.CUBE_FRONT);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-
-        v = vm.getVBO(VBOManager.CUBE_BACK);
-        g.glDrawArrays(v.vertexPattern, v.start / vm.VERT_SIZE, v.length);
-    }
+    
+    
 
     void initShadowProg(GL4 g) {
         // set configurations for vao[1], shadow texture program

@@ -9,7 +9,7 @@ import java.util.*;
 import java.io.*;
 import java.nio.*;
 
-// TODO: insert default shaders into extended classes, allow enableing custom shaders
+// TODO: allow custom shaders
 
 public abstract class GLProgram{
     
@@ -37,6 +37,7 @@ public abstract class GLProgram{
         
     }
 
+    // alter this for easy custom attributes
     void initVertAttributes(GL4 g){
         // configure pointer for position
         g.glVertexAttribPointer(0, 3, GL4.GL_FLOAT, false, 56, 0);
@@ -147,7 +148,7 @@ public abstract class GLProgram{
         System.out.println("{");
         for (String s : program){
             s = s.trim();
-            System.out.println( "\"" + s + "\",");
+            System.out.println( "\"" + s + "\n\",");
         }
         System.out.println("}");
         return program;

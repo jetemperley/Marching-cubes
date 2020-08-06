@@ -42,7 +42,6 @@ public class ModelRenderProgram extends GLProgram {
     void ready(GL4 g) {
 
         g.glUseProgram(ID);
-
         g.glFramebufferTexture(GL4.GL_FRAMEBUFFER, GL4.GL_DEPTH_ATTACHMENT, textureID, 0);
         g.glDrawBuffer(GL4.GL_FRONT);
 
@@ -50,7 +49,7 @@ public class ModelRenderProgram extends GLProgram {
         g.glBlendFunc(GL4.GL_SRC_ALPHA, GL4.GL_ONE_MINUS_SRC_ALPHA);
         g.glEnable(GL4.GL_BLEND);
         g.glDepthFunc(GL4.GL_LEQUAL);
-        // g.glPolygonMode(GL4.GL_FRONT_AND_BACK, GL4.GL_TRIANGLES);
+        g.glPolygonMode(GL4.GL_FRONT_AND_BACK, GL4.GL_TRIANGLES);
         // g.glTexParameteri(GL4.GL_TEXTURE_CUBE_MAP, GL4.GL_TEXTURE_WRAP_S, GL4.GL_CLAMP_TO_EDGE);
         // g.glTexParameteri(GL4.GL_TEXTURE_CUBE_MAP, GL4.GL_TEXTURE_WRAP_T, GL4.GL_CLAMP_TO_EDGE);
         // g.glTexParameteri(GL4.GL_TEXTURE_CUBE_MAP, GL4.GL_TEXTURE_WRAP_R, GL4.GL_CLAMP_TO_EDGE);
@@ -92,41 +91,36 @@ public class ModelRenderProgram extends GLProgram {
         setAmbientLight(g.g, g.ambLight.x, g.ambLight.y, g.ambLight.z);
         setSun(g.g, g.sun.x, g.sun.y, g.sun.z);
         setModelForm(g.g, new Matrix4());
+        
     }
 
     static String[] getDefaultFrag(){
         return new String[] {
             "// model frag shader",
-            "#version 430",
-            "out vec4 color;",
-            "uniform vec4 altcolor;",
-            "uniform vec3 ambient_light;",
-            "layout (binding = 0) uniform samplerCube cubeMap;",
-            "layout (binding = 1) uniform sampler2D tex;",
-            "",
-            "in vec4 shadow_coord;",
-            "in float lighting;",
-            "in vec2 tc;",
-            "",
-            "void main(void){",
-            "float tempLight = 0.4;",
-            "vec4 coord = vec4(",
-            "(shadow_coord.x + 20)/40,",
-            "1-((shadow_coord.y + 20)/40),",
-            "shadow_coord.z,",
-            "shadow_coord.w",
-            ");",
-            "// float shadow = textureProj(shadow_tex, coord);",
-            "",
-            "tempLight += lighting;",
-            "tempLight = min(tempLight, 1.0);",
-            "tempLight *= 0.9;",
-            "",
-            "vec4 texcol = texture(tex, tc);",
-            "",
-            "color = vec4((altcolor.x+texcol.x)*tempLight, (altcolor.y+texcol.y)*tempLight, (altcolor.z+texcol.z)*tempLight, altcolor.w);",
-            "",
-            "}",
+            "#version 430\n",
+            "out vec4 color;\n",
+            "uniform vec4 altcolor;\n",
+            "uniform vec3 ambient_light;\n",
+            "layout (binding = 0) uniform samplerCube cubeMap;\n",
+            "layout (binding = 1) uniform sampler2D tex;\n",
+            "in vec4 shadow_coord;\n",
+            "in float lighting;\n",
+            "in vec2 tc;\n",
+            "void main(void){\n",
+            "float tempLight = 0.4;\n",
+            "vec4 coord = vec4(\n",
+            "(shadow_coord.x + 20)/40,\n",
+            "1-((shadow_coord.y + 20)/40),\n",
+            "shadow_coord.z,\n",
+            "shadow_coord.w\n",
+            ");\n",
+            "// float shadow = textureProj(shadow_tex, coord);\n",
+            "tempLight += lighting;\n",
+            "tempLight = min(tempLight, 1.0);\n",
+            "tempLight *= 0.9;\n",
+            "vec4 texcol = texture(tex, tc);\n",
+            "color = vec4((altcolor.x+texcol.x)*tempLight, (altcolor.y+texcol.y)*tempLight, (altcolor.z+texcol.z)*tempLight, altcolor.w);\n",
+            "}\n",
             };
     
     }
@@ -134,37 +128,32 @@ public class ModelRenderProgram extends GLProgram {
     static String[] getDefaultVert(){
         return new String[] {
             "// model vert shader",
-            "#version 430",
-            "layout (location = 0) in vec3 position;",
-            "layout (location = 1) in vec3 normal;",
-            "layout (location = 2) in vec2 texcoord;",
-            "layout (location = 3) in ivec3 boneID;",
-            "layout (location = 4) in vec3 boneWeight;",
-            "",
-            "// layout (binding = 0) uniform samplerCube cubeMap;",
-            "",
-            "uniform mat4 pv;",
-            "// uniform mat4 light_cam;",
-            "uniform vec3 draw_offset;",
-            "uniform vec3 sun_dir;",
-            "uniform mat4 model_form;",
-            "",
-            "out float lighting;",
-            "out vec4 shadow_coord;",
-            "out vec2 tc;",
-            "",
-            "void main(void) {",
-            "// shadow_coord = light_cam*vec4(draw_offset.x + position.x, draw_offset.y + position.y, draw_offset.z + position.z, 1.0);",
-            "// mat4 off = mat4(1.0);",
-            "// off[3] = vec4(draw_offset, 1.0);",
-            "gl_Position = pv * vec4(draw_offset.x + position.x, draw_offset.y + position.y, draw_offset.z + position.z, 1.0);",
-            "// gl_Position = pv *off* vec4(position, 1.0);",
-            "",
-            "vec4 sun_dir4 = vec4(sun_dir, 0.0);",
-            "lighting = max(dot(normal, sun_dir), 0.0);",
-            "// gl_Position = pv*vec4(draw_offset.x + position.x, draw_offset.y + position.y, draw_offset.z + position.z, 1.0);",
-            "tc = texcoord;",
-            "}",
-            };
+            "#version 430\n",
+            "layout (location = 0) in vec3 position;\n",
+            "layout (location = 1) in vec3 normal;\n",
+            "layout (location = 2) in vec2 texcoord;\n",
+            "layout (location = 3) in ivec3 boneID;\n",
+            "layout (location = 4) in vec3 boneWeight;\n",
+            "// layout (binding = 0) uniform samplerCube cubeMap;\n",
+            "uniform mat4 pv;\n",
+            "// uniform mat4 light_cam;\n",
+            "uniform vec3 draw_offset;\n",
+            "uniform vec3 sun_dir;\n",
+            "uniform mat4 model_form;\n",
+            "out float lighting;\n",
+            "out vec4 shadow_coord;\n",
+            "out vec2 tc;\n",
+            "void main(void) {\n",
+            "// shadow_coord = light_cam*vec4(draw_offset.x + position.x, draw_offset.y + position.y, draw_offset.z + position.z, 1.0);\n",
+            "// mat4 off = mat4(1.0);\n",
+            "// off[3] = vec4(draw_offset, 1.0);\n",
+            "gl_Position = pv * vec4(draw_offset.x + position.x, draw_offset.y + position.y, draw_offset.z + position.z, 1.0);\n",
+            "// gl_Position = pv *off* vec4(position, 1.0);\n",
+            "vec4 sun_dir4 = vec4(sun_dir, 0.0);\n",
+            "lighting = max(dot(normal, sun_dir), 0.0);\n",
+            "// gl_Position = pv*vec4(draw_offset.x + position.x, draw_offset.y + position.y, draw_offset.z + position.z, 1.0);\n",
+            "tc = texcoord;\n",
+            "}\n",
+        };
     }
 }

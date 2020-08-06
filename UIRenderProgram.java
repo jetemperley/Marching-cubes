@@ -68,16 +68,15 @@ public class UIRenderProgram extends GLProgram{
     static String[] getDefaultVert(){
         return new String[] {
             "// ui vert shader",
-            "#version 430",
-            "layout (location = 0) in vec3 position;",
-            "layout (location = 2) in vec2 texCoord;",
-            "uniform mat4 pv;",
-            "",
-            "out vec2 tc;",
-            "void main(void) {",
-            "tc = texCoord;",
-            "gl_Position = pv*vec4(position, 1.0);",
-            "}",
+            "#version 430\n",
+            "layout (location = 0) in vec3 position;\n",
+            "layout (location = 2) in vec2 texCoord;\n",
+            "uniform mat4 pv;\n",
+            "out vec2 tc;\n",
+            "void main(void) {\n",
+            "tc = texCoord;\n",
+            "gl_Position = pv*vec4(position, 1.0);\n",
+            "}\n",
         };
             
     }
@@ -85,21 +84,15 @@ public class UIRenderProgram extends GLProgram{
     static String[] getDefaultFrag(){
         return new String[] {
             "// ui frag shader",
-            "#version 430",
-            "",
-            "layout (binding = 0) uniform sampler2D tex;",
-            "uniform vec4 alt_color;",
-            "out vec4 color;",
-            "in vec2 tc;",
-            "",
-            "void main(void){",
-            "",
-            "",
-            "vec4 tcolor = texture(tex, tc);",
-            "color = tcolor + alt_color;",
-            "",
-            "",
-            "}",
+            "#version 430\n",
+            "layout (binding = 0) uniform sampler2D tex;\n",
+            "uniform vec4 alt_color;\n",
+            "out vec4 color;\n",
+            "in vec2 tc;\n",
+            "void main(void){\n",
+            "vec4 tcolor = texture(tex, tc);\n",
+            "color = tcolor + alt_color;\n",
+            "}\n",
             };
     }
 
